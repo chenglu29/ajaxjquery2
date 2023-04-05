@@ -1,0 +1,36 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div id="show"></div>
+
+@Html.AntiForgeryToken()
+<button type="button" id="callAjax">Say Hello</button>
+@section Scripts
+    {
+    <script type="text/javascript">
+        $("#callAjax").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Index?handler=GetAjax",
+                data: { "name": "Gloria" },
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: "json",
+                headers:
+                {
+                    "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (msg) {
+                    console.log(msg);
+                    document.getElementById("show").innerHTML = msg;
+                }
+            });
+        });
+    </script>
+}
